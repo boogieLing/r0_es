@@ -1,0 +1,856 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome to r0_es’s documentation! &#8212; r0_es  documentation</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet" />
+  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.e8f53015daec13862f6db5e763c41738.css" type="text/css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="#">
+      
+      
+      <h1 class="site-logo" id="site-title">r0_es  documentation</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/index.rst.txt"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.rst</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Welcome to r0_es’s documentation!
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#indices-and-tables">
+   Indices and tables
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-__init__">
+   __init__
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-cfg_settings">
+   cfg_settings
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-http_base">
+   http_base
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-es_tools">
+   es_tools
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="welcome-to-r0-es-s-documentation">
+<h1>Welcome to r0_es’s documentation!<a class="headerlink" href="#welcome-to-r0-es-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+<div class="section" id="module-__init__">
+<span id="init"></span><h1>__init__<a class="headerlink" href="#module-__init__" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="init__.hello_world">
+<span id="__init__.hello_world"></span><code class="sig-prename descclassname"><span class="pre">__init__.</span></code><code class="sig-name descname"><span class="pre">hello_world</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/__init__.html#hello_world"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#init__.hello_world" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Welcome to use r0’s tools.</strong></p>
+<p><strong>Hope you have a happy day.</strong></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-cfg_settings">
+<span id="cfg-settings"></span><h1>cfg_settings<a class="headerlink" href="#module-cfg_settings" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="cfg_settings.ESConfig">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">cfg_settings.</span></code><code class="sig-name descname"><span class="pre">ESConfig</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cfg_settings.html#ESConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cfg_settings.ESConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>普通Config</p>
+<p>Ordinary Config</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="cfg_settings.SingleESConfig">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">cfg_settings.</span></code><code class="sig-name descname"><span class="pre">SingleESConfig</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cfg_settings.html#SingleESConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cfg_settings.SingleESConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>单例模式的Config</p>
+<p>Config for singleton mode</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-http_base">
+<span id="http-base"></span><h1>http_base<a class="headerlink" href="#module-http_base" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="http_base.HTTPClient">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">http_base.</span></code><code class="sig-name descname"><span class="pre">HTTPClient</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">is_require_auth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'base_auth'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">username</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/http_base.html#HTTPClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#http_base.HTTPClient" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="http_base.HTTPClient.get">
+<code class="sig-name descname"><span class="pre">get</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/http_base.html#HTTPClient.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#http_base.HTTPClient.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a GET request. Returns <code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> – URL for the new <code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code> object.</p></li>
+<li><p><strong>**kwargs</strong> – Optional arguments that <code class="docutils literal notranslate"><span class="pre">request</span></code> takes.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>requests.Response</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="http_base.HTTPClient.post">
+<code class="sig-name descname"><span class="pre">post</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/http_base.html#HTTPClient.post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#http_base.HTTPClient.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a POST request. Returns <code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> – URL for the new <code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code> object.</p></li>
+<li><p><strong>data</strong> – (optional) Dictionary, list of tuples, bytes, or file-like
+object to send in the body of the <code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code>.</p></li>
+<li><p><strong>json</strong> – (optional) json to send in the body of the <code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code>.</p></li>
+<li><p><strong>**kwargs</strong> – Optional arguments that <code class="docutils literal notranslate"><span class="pre">request</span></code> takes.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>requests.Response</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-es_tools">
+<span id="es-tools"></span><h1>es_tools<a class="headerlink" href="#module-es_tools" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="es_tools.ESTools">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">es_tools.</span></code><code class="sig-name descname"><span class="pre">ESTools</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">username</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_require_auth</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">special_index</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/es_tools.html#ESTools"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#es_tools.ESTools" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="es_tools.ESTools.cleanup_snapshot_repositories">
+<code class="sig-name descname"><span class="pre">cleanup_snapshot_repositories</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dict</span><a class="reference internal" href="_modules/es_tools.html#ESTools.cleanup_snapshot_repositories"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#es_tools.ESTools.cleanup_snapshot_repositories" title="Permalink to this definition">¶</a></dt>
+<dd><p>清理快照仓库</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>repo_name</strong> – 仓库名称</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="es_tools.ESTools.create_index">
+<code class="sig-name descname"><span class="pre">create_index</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index_prefix</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_mapping</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_shards</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_replicas</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/es_tools.html#ESTools.create_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#es_tools.ESTools.create_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>创建一个新索引，并添加创建时间后缀，yyyy.MM.dd</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index_prefix</strong> – 索引</p></li>
+<li><p><strong>index_mapping</strong> – 创建索引API允许提供的类型映射，可以为空</p></li>
+<li><p><strong>number_of_shards</strong> – 碎片的数量</p></li>
+<li><p><strong>number_of_replicas</strong> – 副本的数量</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>如果成功，返回创建的索引名称；否则返回 None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="es_tools.ESTools.create_snapshot">
+<code class="sig-name descname"><span class="pre">create_snapshot</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snapshot_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indices</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wait_for_completion</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dict</span><a class="reference internal" href="_modules/es_tools.html#ESTools.create_snapshot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#es_tools.ESTools.create_snapshot" title="Permalink to this definition">¶</a></dt>
+<dd><p>创建快照</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo_name</strong> – 仓库名称</p></li>
+<li><p><strong>snapshot_name</strong> – 快照名称</p></li>
+<li><p><strong>indices</strong> – 索引列表</p></li>
+<li><p><strong>wait_for_completion</strong> – 是否等待创建完成</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p>dict，例如：
+{</p>
+<blockquote>
+<div><dl>
+<dt>”snapshot”: {</dt><dd><p>“snapshot”: “snapshot_2”,
+“uuid”: “vdRctLCxSketdKb54xw67g”,
+“version_id”: &lt;version_id&gt;,
+“version”: &lt;version&gt;,
+“indices”: [],
+“data_streams”: [],
+“feature_states”: [],
+“include_global_state”: false,
+“metadata”: {</p>
+<blockquote>
+<div><p>”taken_by”: “user123”,
+“taken_because”: “backup before upgrading”</p>
+</div></blockquote>
+<p>},
+“state”: “SUCCESS”,
+“start_time”: “2020-06-25T14:00:28.850Z”,
+“start_time_in_millis”: 1593093628850,
+“end_time”: “2020-06-25T14:00:28.850Z”,
+“end_time_in_millis”: 1593094752018,
+“duration_in_millis”: 0,
+“failures”: [],
+“shards”: {</p>
+<blockquote>
+<div><p>”total”: 0,
+“failed”: 0,
+“successful”: 0</p>
+</div></blockquote>
+<p>}</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+<p>}</p>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="es_tools.ESTools.create_snapshot_repositories">
+<code class="sig-name descname"><span class="pre">create_snapshot_repositories</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="reference internal" href="_modules/es_tools.html#ESTools.create_snapshot_repositories"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#es_tools.ESTools.create_snapshot_repositories" title="Permalink to this definition">¶</a></dt>
+<dd><p>创建快照仓库</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>repo_name</strong> – 仓库名称</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>bool，创建成功返回True，否则返回False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="es_tools.ESTools.delete_all_index">
+<code class="sig-name descname"><span class="pre">delete_all_index</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shards</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/es_tools.html#ESTools.delete_all_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#es_tools.ESTools.delete_all_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>删除指定索引</p>
+<ul class="simple">
+<li><p>0824[update]: 删除操作过于危险，不允许空参数</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>shards</strong> – 索引列表</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="es_tools.ESTools.delete_doc_by_time_frame">
+<code class="sig-name descname"><span class="pre">delete_doc_by_time_frame</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gte</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lte</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_unit</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'d'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_field</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'&#64;timestamp'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/es_tools.html#ESTools.delete_doc_by_time_frame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#es_tools.ESTools.delete_doc_by_time_frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>根据提供的时间范围删除记录</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index_name</strong> – 索引名称</p></li>
+<li><p><strong>gte</strong> – 起始时间到现在的距离</p></li>
+<li><p><strong>lte</strong> – 终止时间到现在的距离</p></li>
+<li><p><strong>time_unit</strong> – 时间单位，默认为d(day)</p></li>
+</ul>
+</dd>
+</dl>
+<p>参考 <a class="reference external" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#date-math">https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#date-math</a>
+:param time_field: 搜索所使用的标识时间的字段
+:return: 删除的数量, 如果出错，则返回-1</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="es_tools.ESTools.delete_index">
+<code class="sig-name descname"><span class="pre">delete_index</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="reference internal" href="_modules/es_tools.html#ESTools.delete_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#es_tools.ESTools.delete_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>删除指定索引</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>index</strong> – 索引名称</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>bool，删除成功返回True，否则返回False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="es_tools.ESTools.delete_index_by_date">
+<code class="sig-name descname"><span class="pre">delete_index_by_date</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_str</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">int</span><a class="reference internal" href="_modules/es_tools.html#ESTools.delete_index_by_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#es_tools.ESTools.delete_index_by_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>删除指定时间的索引</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index_name</strong> – </p></li>
+<li><p><strong>date_str</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>int，成功删除的索引数量。出错返回 -1</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="es_tools.ESTools.delete_index_by_time_frame">
+<code class="sig-name descname"><span class="pre">delete_index_by_time_frame</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index_include</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gte</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lte</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_unit</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'days'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/es_tools.html#ESTools.delete_index_by_time_frame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#es_tools.ESTools.delete_index_by_time_frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>删除指定时间范围的索引</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index_include</strong> – 索引中需要包含的子字符串</p></li>
+<li><p><strong>gte</strong> – 起始时间到现在的距离</p></li>
+<li><p><strong>lte</strong> – 终止时间到现在的距离</p></li>
+<li><p><strong>time_unit</strong> – 时间单位，默认为days, 由于需要匹配 datetime.timedelta 所以只接收 [“days”, “seconds”, “minutes”, “hours”, “weeks”]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>如果成功返回删除的数量, 否则返回对应的状态码</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="es_tools.ESTools.delete_snapshot_repositories">
+<code class="sig-name descname"><span class="pre">delete_snapshot_repositories</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="reference internal" href="_modules/es_tools.html#ESTools.delete_snapshot_repositories"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#es_tools.ESTools.delete_snapshot_repositories" title="Permalink to this definition">¶</a></dt>
+<dd><p>删除快照仓库</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>repo_name</strong> – 仓库名称</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>bool，删除成功返回True，否则返回False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="es_tools.ESTools.exists_index">
+<code class="sig-name descname"><span class="pre">exists_index</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/es_tools.html#ESTools.exists_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#es_tools.ESTools.exists_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>判断index是否存在</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>index</strong> – 索引名称</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="es_tools.ESTools.get_doc_count">
+<code class="sig-name descname"><span class="pre">get_doc_count</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/es_tools.html#ESTools.get_doc_count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#es_tools.ESTools.get_doc_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>获取某一index下doc的数量</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>index_name</strong> – 索引名称</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="es_tools.ESTools.get_indices">
+<code class="sig-name descname"><span class="pre">get_indices</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">is_filter_sys_index</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">list</span><a class="reference internal" href="_modules/es_tools.html#ESTools.get_indices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#es_tools.ESTools.get_indices" title="Permalink to this definition">¶</a></dt>
+<dd><p>获取所有索引列表</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>is_filter_sys_index</strong> – 是否过滤系统索引，默认为True</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>索引列表</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="es_tools.ESTools.get_indices_info">
+<code class="sig-name descname"><span class="pre">get_indices_info</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/es_tools.html#ESTools.get_indices_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#es_tools.ESTools.get_indices_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>获取索引信息</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>index</strong> – 索引名称</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="es_tools.ESTools.get_repositories">
+<code class="sig-name descname"><span class="pre">get_repositories</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">list</span><a class="reference internal" href="_modules/es_tools.html#ESTools.get_repositories"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#es_tools.ESTools.get_repositories" title="Permalink to this definition">¶</a></dt>
+<dd><p>获取仓库列表</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>返回仓库列表，
+例如： [
+{“id”: “backup_all”, “type”: “fs”},
+]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="es_tools.ESTools.get_snapshot">
+<code class="sig-name descname"><span class="pre">get_snapshot</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snapshot_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dict</span><a class="reference internal" href="_modules/es_tools.html#ESTools.get_snapshot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#es_tools.ESTools.get_snapshot" title="Permalink to this definition">¶</a></dt>
+<dd><p>获取快照</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo_name</strong> – 仓库名称</p></li>
+<li><p><strong>snapshot_name</strong> – 快照名称</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p>dict，例如：
+{</p>
+<blockquote>
+<div><dl>
+<dt>”snapshots”: [</dt><dd><dl>
+<dt>{</dt><dd><p>“snapshot”: “snapshot_2”,
+“uuid”: “vdRctLCxSketdKb54xw67g”,
+“version_id”: &lt;version_id&gt;,
+“version”: &lt;version&gt;,
+“indices”: [],
+“data_streams”: [],
+“feature_states”: [],
+“include_global_state”: true,
+“state”: “SUCCESS”,
+“start_time”: “2020-07-06T21:55:18.129Z”,
+“start_time_in_millis”: 1593093628850,
+“end_time”: “2020-07-06T21:55:18.876Z”,
+“end_time_in_millis”: 1593094752018,
+“duration_in_millis”: 0,
+“failures”: [],
+“shards”: {</p>
+<blockquote>
+<div><p>”total”: 0,
+“failed”: 0,
+“successful”: 0</p>
+</div></blockquote>
+<p>}</p>
+</dd>
+</dl>
+<p>}</p>
+</dd>
+</dl>
+<p>]</p>
+</div></blockquote>
+<p>}</p>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="es_tools.ESTools.get_snapshot_repositories">
+<code class="sig-name descname"><span class="pre">get_snapshot_repositories</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dict</span><a class="reference internal" href="_modules/es_tools.html#ESTools.get_snapshot_repositories"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#es_tools.ESTools.get_snapshot_repositories" title="Permalink to this definition">¶</a></dt>
+<dd><p>获取快照仓库信息</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>repo_name</strong> – 仓库名称</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl>
+<dt>dict，仓库信息</dt><dd><p>例如：
+{</p>
+<blockquote>
+<div><dl>
+<dt>”backup_all”<span class="classifier">{</span></dt><dd><p>“type” : “fs”,
+“settings” : {</p>
+<blockquote>
+<div><p>”readonly” : “true”,
+“compress” : “true”,
+“location” : “backup_all”</p>
+</div></blockquote>
+<p>}</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+</dd>
+</dl>
+<p>}</p>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="es_tools.ESTools.get_snapshot_status">
+<code class="sig-name descname"><span class="pre">get_snapshot_status</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snapshot_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dict</span><a class="reference internal" href="_modules/es_tools.html#ESTools.get_snapshot_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#es_tools.ESTools.get_snapshot_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>获取快照状态</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo_name</strong> – 仓库名称</p></li>
+<li><p><strong>snapshot_name</strong> – 快照名称</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="es_tools.ESTools.query_doc">
+<code class="sig-name descname"><span class="pre">query_doc</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">page</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gte</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lte</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_unit</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'d'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_field</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'&#64;timestamp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/es_tools.html#ESTools.query_doc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#es_tools.ESTools.query_doc" title="Permalink to this definition">¶</a></dt>
+<dd><p>按页查询，from-size法</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index_name</strong> – 索引名称</p></li>
+<li><p><strong>page</strong> – 页面下标</p></li>
+<li><p><strong>size</strong> – 页面大小</p></li>
+<li><p><strong>include</strong> – 输出时保留的字段</p></li>
+<li><p><strong>exclude</strong> – 输出时忽略的字段</p></li>
+<li><p><strong>gte</strong> – 起始时间到现在的距离</p></li>
+<li><p><strong>lte</strong> – 终止时间到现在的距离</p></li>
+<li><p><strong>time_unit</strong> – 时间单位，默认为d(day)</p></li>
+</ul>
+</dd>
+</dl>
+<ul class="simple">
+<li><p>参考 <a class="reference external" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#date-math">https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#date-math</a></p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>time_field</strong> – 时间戳字段名称</p></li>
+<li><p><strong>filters</strong> – 过滤条件</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>返回包含结果的列表</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="es_tools.ESTools.query_doc_huge">
+<code class="sig-name descname"><span class="pre">query_doc_huge</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gte</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lte</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_unit</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'d'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_field</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'&#64;timestamp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/es_tools.html#ESTools.query_doc_huge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#es_tools.ESTools.query_doc_huge" title="Permalink to this definition">¶</a></dt>
+<dd><p>基于search-after，查询10000条以上的数据，但无法分页</p>
+<p>:param index_name:索引名称
+:param include: 输出时保留的字段
+:param exclude: 输出时忽略的字段
+:param gte: 起始时间到现在的距离
+:param lte: 终止时间到现在的距离
+:param time_unit: 时间单位，默认为d(day)
+- 参考 <a class="reference external" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#date-math">https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#date-math</a>
+:param time_field:搜索所使用的标识时间的字段
+:param filters: 过滤条件
+:return: 返回包含结果的列表</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="es_tools.ESTools.query_doc_tp">
+<code class="sig-name descname"><span class="pre">query_doc_tp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gte</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lte</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_unit</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'d'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_field</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'&#64;timestamp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/es_tools.html#ESTools.query_doc_tp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#es_tools.ESTools.query_doc_tp" title="Permalink to this definition">¶</a></dt>
+<dd><p>以线程池的方式获取doc</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index_name</strong> – 索引名称</p></li>
+<li><p><strong>size</strong> – 每个线程查询的size</p></li>
+<li><p><strong>include</strong> – 输出时保留的字段</p></li>
+<li><p><strong>exclude</strong> – 输出时忽略的字段</p></li>
+<li><p><strong>gte</strong> – 起始时间到现在的距离</p></li>
+<li><p><strong>lte</strong> – 终止时间到现在的距离</p></li>
+<li><p><strong>time_unit</strong> – 时间单位，默认为d(day)</p></li>
+</ul>
+</dd>
+</dl>
+<ul class="simple">
+<li><p>参考 <a class="reference external" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#date-math">https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#date-math</a></p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>time_field</strong> – 时间戳字段名称</p></li>
+<li><p><strong>filters</strong> – 过滤条件</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>返回包含结果的列表</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="es_tools.ESTools.restore_all_snapshot">
+<code class="sig-name descname"><span class="pre">restore_all_snapshot</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snapshot_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shards</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/es_tools.html#ESTools.restore_all_snapshot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#es_tools.ESTools.restore_all_snapshot" title="Permalink to this definition">¶</a></dt>
+<dd><p>恢复所有快照</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo_name</strong> – 快照仓库</p></li>
+<li><p><strong>snapshot_name</strong> – </p></li>
+<li><p><strong>shards</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="es_tools.ESTools.restore_snapshot">
+<code class="sig-name descname"><span class="pre">restore_snapshot</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snapshot_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indices</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dict</span><a class="reference internal" href="_modules/es_tools.html#ESTools.restore_snapshot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#es_tools.ESTools.restore_snapshot" title="Permalink to this definition">¶</a></dt>
+<dd><p>恢复快照</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo_name</strong> – 仓库名称</p></li>
+<li><p><strong>snapshot_name</strong> – 快照名称</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="es_tools.ESTools.upsert_doc">
+<code class="sig-name descname"><span class="pre">upsert_doc</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doc_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doc_body</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">int</span><a class="reference internal" href="_modules/es_tools.html#ESTools.upsert_doc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#es_tools.ESTools.upsert_doc" title="Permalink to this definition">¶</a></dt>
+<dd><p>新增/更新一条记录，并且更新 &#64;timestamp 为新增/更新时间</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index_name</strong> – 准确的索引名称</p></li>
+<li><p><strong>doc_id</strong> – 记录的id，不指定时插入会使用自增长id</p></li>
+<li><p><strong>doc_body</strong> – 记录 body</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>结果的状态码</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="es_tools.query_generator">
+<code class="sig-prename descclassname"><span class="pre">es_tools.</span></code><code class="sig-name descname"><span class="pre">query_generator</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gte</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lte</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_unit</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'d'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">page</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_after</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_field</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'&#64;timestamp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/es_tools.html#query_generator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#es_tools.query_generator" title="Permalink to this definition">¶</a></dt>
+<dd><p>根据时间和页面大小生成查询query。</p>
+<p>如果指定了search_after, 或者只指定了size没有page，那么分页查询基于search after，
+核心是利用排序游标，在这里使用时间戳作为降序游标，以_id作为可选升序游标。</p>
+<p>如果指定了page和size，那么分页查询基于from-size。</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gte</strong> – 起始时间到现在的距离</p></li>
+<li><p><strong>lte</strong> – 终止时间到现在的距离</p></li>
+<li><p><strong>time_unit</strong> – 时间单位，默认为d(day)</p></li>
+<li><p><strong>page</strong> – 页面序号</p></li>
+<li><p><strong>size</strong> – 页面大小，但此选项在_delete_by_query会被忽略</p></li>
+<li><p><strong>search_after</strong> – 上一次查询的最后一个游标</p></li>
+<li><p><strong>time_field</strong> – 时间戳字段名称</p></li>
+<li><p><strong>include</strong> – 输出时保留的字段</p></li>
+<li><p><strong>exclude</strong> – 输出时忽略的字段</p></li>
+<li><p><strong>filters</strong> – 过滤条件</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>查询用的query</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="es_tools.time_traits">
+<code class="sig-prename descclassname"><span class="pre">es_tools.</span></code><code class="sig-name descname"><span class="pre">time_traits</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_str</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/es_tools.html#time_traits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#es_tools.time_traits" title="Permalink to this definition">¶</a></dt>
+<dd><p>从字符串中分别提取日期和时间</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>raw_str: 原生的字符串，匹配串</p>
+</dd>
+<dt>Returns:</dt><dd><p>datetime，可以直接进行大小比较</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By r0<br/>
+        
+            &copy; Copyright 2021, r0.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

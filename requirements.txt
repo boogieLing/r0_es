@@ -1,0 +1,9 @@
+oslo.config
+oslo.log
+requests~=2.26.0
+ujson~=4.1.0
+input_helper
+datetime
+python-dateutil
+pytest
+pytest-sugar

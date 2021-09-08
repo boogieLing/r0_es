@@ -1,0 +1,1256 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>es_tools &#8212; r0_es  documentation</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.e8f53015daec13862f6db5e763c41738.css" type="text/css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+      
+      <h1 class="site-logo" id="site-title">r0_es  documentation</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+            <!-- Source interaction buttons -->
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <h1>Source code for es_tools</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=UTF-8</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span>
+
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">ujson</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">dateutil.parser</span>
+<span class="kn">import</span> <span class="nn">input_helper</span> <span class="k">as</span> <span class="nn">ih</span>
+
+<span class="kn">from</span> <span class="nn">http</span> <span class="kn">import</span> <span class="n">HTTPStatus</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">requests.packages.urllib3.exceptions</span> <span class="kn">import</span> <span class="n">InsecureRequestWarning</span>
+
+<span class="kn">from</span> <span class="nn">oslo_log</span> <span class="kn">import</span> <span class="n">log</span>
+
+<span class="kn">from</span> <span class="nn">http_base</span> <span class="kn">import</span> <span class="n">HTTPClient</span>
+<span class="kn">from</span> <span class="nn">cfg_settings</span> <span class="kn">import</span> <span class="n">ESConfig</span>
+
+<span class="n">requests</span><span class="o">.</span><span class="n">packages</span><span class="o">.</span><span class="n">urllib3</span><span class="o">.</span><span class="n">disable_warnings</span><span class="p">(</span><span class="n">InsecureRequestWarning</span><span class="p">)</span>
+
+<span class="n">LOG</span> <span class="o">=</span> <span class="n">log</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="time_traits"><a class="viewcode-back" href="../index.html#es_tools.time_traits">[docs]</a><span class="k">def</span> <span class="nf">time_traits</span><span class="p">(</span><span class="n">raw_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    从字符串中分别提取日期和时间</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        raw_str: 原生的字符串，匹配串</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        datetime，可以直接进行大小比较</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">res_dt</span><span class="p">,</span> <span class="n">res_index</span> <span class="o">=</span> <span class="n">dateutil</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">raw_str</span><span class="p">,</span> <span class="n">fuzzy_with_tokens</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;Unknown string format&quot;</span> <span class="ow">in</span> <span class="n">e</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">date_re_str</span> <span class="o">=</span> <span class="s2">&quot;\d</span><span class="si">{4}</span><span class="s2">[-/\.]*\d{1,2}[-/\.]*\d{1,2}&quot;</span>
+            <span class="n">time_re_str</span> <span class="o">=</span> <span class="s2">&quot;\d{1,2}[:]\d{1,2}[:]?(?:\d{1,2})?&quot;</span>
+            <span class="n">date_re</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">date_re_str</span><span class="p">)</span>
+            <span class="n">time_re</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">time_re_str</span><span class="p">)</span>
+            <span class="c1"># dt_re = re.compile(f&quot;{date_re_str}[.-/ T](?:{time_re_str})?&quot;)</span>
+
+            <span class="n">ans_date</span> <span class="o">=</span> <span class="n">date_re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">raw_str</span><span class="p">)</span>
+            <span class="n">ans_time</span> <span class="o">=</span> <span class="n">time_re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">raw_str</span><span class="p">)</span>
+            <span class="c1"># ans_dt = dt_re.findall(raw_str)</span>
+            <span class="n">date_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ans_date</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">date_list</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">it</span><span class="p">)</span> <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="n">ans_date</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ans_time</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">time_list</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">it</span><span class="p">)</span> <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="n">ans_time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)]</span>
+                <span class="n">date_list</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">time_list</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">date_list</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">res_dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="o">*</span><span class="n">date_list</span><span class="p">)</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Patch </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> successfully.&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">res_dt</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">res_dt</span></div>
+
+
+<div class="viewcode-block" id="query_generator"><a class="viewcode-back" href="../index.html#es_tools.query_generator">[docs]</a><span class="k">def</span> <span class="nf">query_generator</span><span class="p">(</span>
+        <span class="n">gte</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">lte</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">time_unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;d&quot;</span><span class="p">,</span>
+        <span class="n">page</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">search_after</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">time_field</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;@timestamp&quot;</span><span class="p">,</span> <span class="n">include</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">exclude</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">filters</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    根据时间和页面大小生成查询query。</span>
+
+<span class="sd">    如果指定了search_after, 或者只指定了size没有page，那么分页查询基于search after，</span>
+<span class="sd">    核心是利用排序游标，在这里使用时间戳作为降序游标，以_id作为可选升序游标。</span>
+
+<span class="sd">    如果指定了page和size，那么分页查询基于from-size。</span>
+
+<span class="sd">    :param gte: 起始时间到现在的距离</span>
+<span class="sd">    :param lte: 终止时间到现在的距离</span>
+<span class="sd">    :param time_unit: 时间单位，默认为d(day)</span>
+<span class="sd">    :param page: 页面序号</span>
+<span class="sd">    :param size: 页面大小，但此选项在_delete_by_query会被忽略</span>
+<span class="sd">    :param search_after: 上一次查询的最后一个游标</span>
+<span class="sd">    :param time_field: 时间戳字段名称</span>
+<span class="sd">    :param include: 输出时保留的字段</span>
+<span class="sd">    :param exclude: 输出时忽略的字段</span>
+<span class="sd">    :param filters: 过滤条件</span>
+<span class="sd">    :return: 查询用的query</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ans_query</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">size</span><span class="p">,</span>
+        <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;bool&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;filter&quot;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;range&quot;</span><span class="p">:</span> <span class="p">{</span>
+                            <span class="n">time_field</span><span class="p">:</span> <span class="p">{</span>
+                                <span class="s2">&quot;lte&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;now-</span><span class="si">{</span><span class="n">lte</span><span class="si">}{</span><span class="n">time_unit</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                                <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;epoch_millis&quot;</span>
+                            <span class="p">}</span>
+                        <span class="p">}</span>
+                    <span class="p">},</span>
+                <span class="p">],</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;_source&quot;</span><span class="p">:</span> <span class="p">{</span>
+
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="n">page</span> <span class="ow">and</span> <span class="n">search_after</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">page</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ans_query</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="s2">&quot;sort&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="n">time_field</span><span class="p">:</span> <span class="s2">&quot;desc&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="s2">&quot;asc&quot;</span>
+                <span class="p">}</span>
+            <span class="p">]</span>
+        <span class="p">})</span>
+    <span class="k">if</span> <span class="n">search_after</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ans_query</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="s2">&quot;search_after&quot;</span><span class="p">:</span> <span class="n">search_after</span>
+        <span class="p">})</span>
+    <span class="k">if</span> <span class="n">page</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ans_query</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="s2">&quot;from&quot;</span><span class="p">:</span> <span class="n">page</span> <span class="o">*</span> <span class="n">size</span>
+        <span class="p">})</span>
+    <span class="k">if</span> <span class="n">gte</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ans_query</span><span class="p">[</span><span class="s2">&quot;query&quot;</span><span class="p">][</span><span class="s2">&quot;bool&quot;</span><span class="p">][</span><span class="s2">&quot;filter&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;range&quot;</span><span class="p">][</span><span class="n">time_field</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="s2">&quot;gte&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;now-</span><span class="si">{</span><span class="n">gte</span><span class="si">}{</span><span class="n">time_unit</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">})</span>
+    <span class="k">if</span> <span class="n">include</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">exclude</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Cannot specify both &#39;fields&#39; and &#39;ignore_fields&#39;&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">include</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">include</span> <span class="o">=</span> <span class="n">ih</span><span class="o">.</span><span class="n">get_list_from_arg_strings</span><span class="p">(</span><span class="n">include</span><span class="p">)</span>
+        <span class="n">ans_query</span><span class="p">[</span><span class="s2">&quot;_source&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="s2">&quot;include&quot;</span><span class="p">:</span> <span class="n">include</span>
+        <span class="p">})</span>
+    <span class="k">if</span> <span class="n">exclude</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">exclude</span> <span class="o">=</span> <span class="n">ih</span><span class="o">.</span><span class="n">get_list_from_arg_strings</span><span class="p">(</span><span class="n">exclude</span><span class="p">)</span>
+        <span class="n">ans_query</span><span class="p">[</span><span class="s2">&quot;_source&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="s2">&quot;exclude&quot;</span><span class="p">:</span> <span class="n">exclude</span>
+        <span class="p">})</span>
+    <span class="k">if</span> <span class="n">filters</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ans_query</span><span class="p">[</span><span class="s2">&quot;query&quot;</span><span class="p">][</span><span class="s2">&quot;bool&quot;</span><span class="p">][</span><span class="s2">&quot;filter&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ans_query</span></div>
+
+
+<div class="viewcode-block" id="ESTools"><a class="viewcode-back" href="../index.html#es_tools.ESTools">[docs]</a><span class="k">class</span> <span class="nc">ESTools</span><span class="p">(</span><span class="n">HTTPClient</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">conf_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">username</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">is_require_auth</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="n">special_index</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        初始化，并且建立HTTP连接</span>
+
+<span class="sd">        :param conf_file: 配置文件的地址，配置文件必须是ini风格的</span>
+<span class="sd">        :param host: es主机地址</span>
+<span class="sd">        :param port: es端口，如果需要的话会以 host:port 的方式进行拼接</span>
+<span class="sd">        :param username: 用户名</span>
+<span class="sd">        :param password: 用户密码</span>
+<span class="sd">        :param is_require_auth: 是否需要验证，这一步会在HTTPBase中进行验证</span>
+<span class="sd">        :param special_index: 敏感索引、特殊索引，搜索时将会忽略</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">conf_file</span><span class="p">:</span>
+            <span class="n">conf</span> <span class="o">=</span> <span class="n">ESConfig</span><span class="p">(</span><span class="n">conf_file</span><span class="p">)()</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">ESTools</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+                <span class="n">is_require_auth</span><span class="o">=</span><span class="n">conf</span><span class="o">.</span><span class="n">elasticsearch</span><span class="o">.</span><span class="n">is_require_auth</span><span class="p">,</span>
+                <span class="n">username</span><span class="o">=</span><span class="n">conf</span><span class="o">.</span><span class="n">elasticsearch</span><span class="o">.</span><span class="n">username</span><span class="p">,</span>
+                <span class="n">password</span><span class="o">=</span><span class="n">conf</span><span class="o">.</span><span class="n">elasticsearch</span><span class="o">.</span><span class="n">password</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">conf</span> <span class="o">=</span> <span class="n">conf</span>
+            <span class="c1"># if not conf.elasticsearch.username:</span>
+            <span class="c1">#     raise ValueError(&quot;The username of an datasource for vehicle manager is required&quot;)</span>
+            <span class="c1"># self = ESAPI(conf.elasticsearch.username, conf.elasticsearch.password)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__username</span> <span class="o">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">elasticsearch</span><span class="o">.</span><span class="n">username</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__password</span> <span class="o">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">elasticsearch</span><span class="o">.</span><span class="n">password</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">es_host</span> <span class="o">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">elasticsearch</span><span class="o">.</span><span class="n">host</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">special_index</span> <span class="o">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">elasticsearch</span><span class="o">.</span><span class="n">special_index</span>
+        <span class="k">if</span> <span class="n">host</span> <span class="ow">and</span> <span class="n">username</span> <span class="ow">and</span> <span class="n">password</span> <span class="ow">and</span> <span class="n">is_require_auth</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">ESTools</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+                <span class="n">is_require_auth</span><span class="o">=</span><span class="n">is_require_auth</span><span class="p">,</span>
+                <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">,</span>
+                <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">conf</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;host&quot;</span><span class="p">:</span> <span class="n">host</span><span class="p">,</span>
+                <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="n">username</span><span class="p">,</span>
+                <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="n">password</span><span class="p">,</span>
+                <span class="s2">&quot;is_require_auth&quot;</span><span class="p">:</span> <span class="n">is_require_auth</span><span class="p">,</span>
+            <span class="p">}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__username</span> <span class="o">=</span> <span class="n">username</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__password</span> <span class="o">=</span> <span class="n">password</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">es_host</span> <span class="o">=</span> <span class="n">host</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">special_index</span> <span class="o">=</span> <span class="n">special_index</span>
+            <span class="k">if</span> <span class="n">port</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">es_host</span> <span class="o">=</span> <span class="s2">&quot;:&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">es_host</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">port</span><span class="p">)])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;port&quot;</span><span class="p">:</span> <span class="n">port</span><span class="p">})</span>
+
+    <span class="k">def</span> <span class="nf">get_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">rsp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rsp</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">rsp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+                <span class="k">return</span> <span class="n">data</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ESTools.get_doc_count"><a class="viewcode-back" href="../index.html#es_tools.ESTools.get_doc_count">[docs]</a>    <span class="k">def</span> <span class="nf">get_doc_count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        获取某一index下doc的数量</span>
+
+<span class="sd">        :param index_name: 索引名称</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">es_host</span><span class="si">}</span><span class="s2">/_cat/count/</span><span class="si">{</span><span class="n">index_name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">rsp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rsp</span> <span class="ow">and</span> <span class="n">rsp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="n">count</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">rsp</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">))[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="c1"># count = rsp[&quot;count&quot;]</span>
+            <span class="c1"># elasticsearch.exceptions.UnsupportedProductError:</span>
+            <span class="c1"># The client noticed that the server is not a supported distribution of Elasticsearch to 7.10.1</span>
+            <span class="k">return</span> <span class="n">count</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="ESTools.get_indices_info"><a class="viewcode-back" href="../index.html#es_tools.ESTools.get_indices_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_indices_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        获取索引信息</span>
+
+<span class="sd">        :param index: 索引名称</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">es_host</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">rsp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rsp</span> <span class="ow">and</span> <span class="n">rsp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">rsp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="ESTools.exists_index"><a class="viewcode-back" href="../index.html#es_tools.ESTools.exists_index">[docs]</a>    <span class="k">def</span> <span class="nf">exists_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        判断index是否存在</span>
+
+<span class="sd">        :param index: 索引名称</span>
+<span class="sd">        :return: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">rsp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_indices_info</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rsp</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+        <span class="c1"># url = f&quot;{self.es_host}/{index_name}&quot;</span>
+        <span class="c1"># rsp = self.head(url)</span>
+        <span class="c1"># if rsp and rsp.status_code == HTTPStatus.OK:</span>
+        <span class="c1">#     return True</span>
+        <span class="c1"># elif rsp and rsp.status_code == HTTPStatus.NOT_FOUND:</span>
+        <span class="c1">#     return False</span>
+        <span class="c1"># else:</span>
+        <span class="c1">#     return False</span>
+
+<div class="viewcode-block" id="ESTools.get_indices"><a class="viewcode-back" href="../index.html#es_tools.ESTools.get_indices">[docs]</a>    <span class="k">def</span> <span class="nf">get_indices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_filter_sys_index</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        获取所有索引列表</span>
+
+<span class="sd">        :param is_filter_sys_index: 是否过滤系统索引，默认为True</span>
+<span class="sd">        :return: 索引列表</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">es_host</span><span class="si">}</span><span class="s2">/_cat/indices&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">h</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">)</span>
+        <span class="n">rsp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rsp</span> <span class="ow">and</span> <span class="n">rsp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">rsp</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_filter_sys_index</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">data</span>
+            <span class="n">filter_data</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;^\.&quot;</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span> <span class="ow">and</span> <span class="n">item</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">special_index</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">filter_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">filter_data</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="ESTools.create_index"><a class="viewcode-back" href="../index.html#es_tools.ESTools.create_index">[docs]</a>    <span class="k">def</span> <span class="nf">create_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index_prefix</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">index_mapping</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                     <span class="n">number_of_shards</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">number_of_replicas</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        创建一个新索引，并添加创建时间后缀，yyyy.MM.dd</span>
+
+<span class="sd">        :param index_prefix: 索引</span>
+<span class="sd">        :param index_mapping: 创建索引API允许提供的类型映射，可以为空</span>
+<span class="sd">        :param number_of_shards: 碎片的数量</span>
+<span class="sd">        :param number_of_replicas: 副本的数量</span>
+<span class="sd">        :return: 如果成功，返回创建的索引名称；否则返回 None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pre_mapping</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;@timestamp&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;strict_date_optional_time||epoch_millis&quot;</span><span class="p">,</span>
+                <span class="c1"># Examples: yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ or yyyy-MM-dd.</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;date&quot;</span><span class="p">,</span>
+                <span class="c1"># &quot;enabled&quot;: True</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">index_mapping</span><span class="p">:</span>
+            <span class="n">index_mapping</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{}}</span>
+        <span class="n">index_mapping</span><span class="p">[</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">pre_mapping</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;settings&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;index&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;number_of_shards&quot;</span><span class="p">:</span> <span class="n">number_of_shards</span><span class="p">,</span>
+                    <span class="s2">&quot;number_of_replicas&quot;</span><span class="p">:</span> <span class="n">number_of_replicas</span>
+                <span class="p">}</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;mappings&quot;</span><span class="p">:</span> <span class="n">index_mapping</span>
+        <span class="p">}</span>
+        <span class="n">timestamp</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y.%m.</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">))</span>
+        <span class="n">index_name</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">index_prefix</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">exists_index</span><span class="p">(</span><span class="n">index_name</span><span class="p">):</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">es_host</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">index_name</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">rsp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">ujson</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">rsp</span> <span class="ow">and</span> <span class="n">rsp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">index_name</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="ESTools.delete_index"><a class="viewcode-back" href="../index.html#es_tools.ESTools.delete_index">[docs]</a>    <span class="k">def</span> <span class="nf">delete_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        删除指定索引</span>
+
+<span class="sd">        :param index: 索引名称</span>
+<span class="sd">        :return: bool，删除成功返回True，否则返回False</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">es_host</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">rsp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rsp</span> <span class="ow">and</span> <span class="n">rsp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="ESTools.delete_all_index"><a class="viewcode-back" href="../index.html#es_tools.ESTools.delete_all_index">[docs]</a>    <span class="k">def</span> <span class="nf">delete_all_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shards</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        删除指定索引</span>
+
+<span class="sd">        - 0824[update]: 删除操作过于危险，不允许空参数</span>
+<span class="sd">        :param shards: 索引列表</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># if shards is None:</span>
+        <span class="c1">#     indices = self.get_indices()</span>
+        <span class="c1"># else:</span>
+        <span class="c1">#     indices = shards</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">shards</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">delete_index</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;success delete </span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;failure delete </span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ESTools.delete_index_by_date"><a class="viewcode-back" href="../index.html#es_tools.ESTools.delete_index_by_date">[docs]</a>    <span class="k">def</span> <span class="nf">delete_index_by_date</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">date_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        删除指定时间的索引</span>
+
+<span class="sd">        :param index_name:</span>
+<span class="sd">        :param date_str:</span>
+<span class="sd">        :return: int，成功删除的索引数量。出错返回 -1</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">pattern_dt</span> <span class="o">=</span> <span class="n">time_traits</span><span class="p">(</span><span class="n">date_str</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_indices</span><span class="p">()</span>
+        <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="n">matching_mt</span> <span class="o">=</span> <span class="n">time_traits</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">matching_mt</span><span class="p">:</span>
+
+                <span class="k">if</span> <span class="n">index_name</span> <span class="ow">in</span> <span class="n">index</span> <span class="ow">and</span> <span class="n">matching_mt</span> <span class="o">==</span> <span class="n">pattern_dt</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">delete_index</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
+                        <span class="n">cnt</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">return</span> <span class="n">cnt</span></div>
+
+<div class="viewcode-block" id="ESTools.delete_index_by_time_frame"><a class="viewcode-back" href="../index.html#es_tools.ESTools.delete_index_by_time_frame">[docs]</a>    <span class="k">def</span> <span class="nf">delete_index_by_time_frame</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">index_include</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">gte</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">lte</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">time_unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;days&quot;</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        删除指定时间范围的索引</span>
+
+<span class="sd">        :param index_include: 索引中需要包含的子字符串</span>
+<span class="sd">        :param gte: 起始时间到现在的距离</span>
+<span class="sd">        :param lte: 终止时间到现在的距离</span>
+<span class="sd">        :param time_unit: 时间单位，默认为days, 由于需要匹配 datetime.timedelta 所以只接收 [&quot;days&quot;, &quot;seconds&quot;, &quot;minutes&quot;, &quot;hours&quot;, &quot;weeks&quot;]</span>
+<span class="sd">        :return: 如果成功返回删除的数量, 否则返回对应的状态码</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">time_unit</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;days&quot;</span><span class="p">,</span> <span class="s2">&quot;seconds&quot;</span><span class="p">,</span> <span class="s2">&quot;minutes&quot;</span><span class="p">,</span> <span class="s2">&quot;hours&quot;</span><span class="p">,</span> <span class="s2">&quot;weeks&quot;</span><span class="p">]:</span>
+            <span class="n">time_unit</span> <span class="o">=</span> <span class="s2">&quot;days&quot;</span>
+        <span class="n">args_gte</span> <span class="o">=</span> <span class="p">{</span><span class="n">time_unit</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">gte</span><span class="p">}</span>
+        <span class="n">args_lte</span> <span class="o">=</span> <span class="p">{</span><span class="n">time_unit</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">lte</span><span class="p">}</span>
+        <span class="n">gte_dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="o">**</span><span class="n">args_gte</span><span class="p">)</span>
+        <span class="n">lte_dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="o">**</span><span class="n">args_lte</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_indices</span><span class="p">()</span>
+        <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="n">matching_mt</span> <span class="o">=</span> <span class="n">time_traits</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">matching_mt</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">index_include</span> <span class="ow">in</span> <span class="n">index</span> <span class="ow">and</span> <span class="n">gte_dt</span> <span class="o">&lt;=</span> <span class="n">matching_mt</span> <span class="o">&lt;=</span> <span class="n">lte_dt</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">delete_index</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
+                        <span class="n">cnt</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">return</span> <span class="n">cnt</span></div>
+
+<div class="viewcode-block" id="ESTools.upsert_doc"><a class="viewcode-back" href="../index.html#es_tools.ESTools.upsert_doc">[docs]</a>    <span class="k">def</span> <span class="nf">upsert_doc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">doc_id</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">doc_body</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        新增/更新一条记录，并且更新 @timestamp 为新增/更新时间</span>
+
+<span class="sd">        :param index_name: 准确的索引名称</span>
+<span class="sd">        :param doc_id: 记录的id，不指定时插入会使用自增长id</span>
+<span class="sd">        :param doc_body: 记录 body</span>
+<span class="sd">        :return: 结果的状态码</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">doc_body</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">doc_body</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">timestamp</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S.</span><span class="si">%f</span><span class="s2">Z&quot;</span><span class="p">))</span>
+        <span class="n">doc_body</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;@timestamp&quot;</span><span class="p">:</span> <span class="n">timestamp</span><span class="p">})</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">exists_index</span><span class="p">(</span><span class="n">index_name</span><span class="p">):</span>
+            <span class="c1"># rsp = None</span>
+            <span class="k">if</span> <span class="n">doc_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">es_host</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">index_name</span><span class="si">}</span><span class="s2">/_doc/&quot;</span>
+                <span class="n">rsp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">ujson</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">doc_body</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">es_host</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">index_name</span><span class="si">}</span><span class="s2">/_doc/</span><span class="si">{</span><span class="n">doc_id</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">rsp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">ujson</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">doc_body</span><span class="p">))</span>
+
+            <span class="n">rsp_json</span> <span class="o">=</span> <span class="n">ujson</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">rsp</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">rsp_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;result&quot;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">rsp_json</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;created&quot;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">CREATED</span>
+                <span class="k">elif</span> <span class="n">rsp_json</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;updated&quot;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">OK</span>
+            <span class="k">return</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">BAD_REQUEST</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># print(f&quot;{index_name} not found.&quot;)</span>
+            <span class="k">return</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">NOT_FOUND</span></div>
+
+<div class="viewcode-block" id="ESTools.delete_doc_by_time_frame"><a class="viewcode-back" href="../index.html#es_tools.ESTools.delete_doc_by_time_frame">[docs]</a>    <span class="k">def</span> <span class="nf">delete_doc_by_time_frame</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">index_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">gte</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">lte</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">time_unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;d&quot;</span><span class="p">,</span>
+            <span class="n">time_field</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;@timestamp&quot;</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        根据提供的时间范围删除记录</span>
+
+<span class="sd">        :param index_name: 索引名称</span>
+<span class="sd">        :param gte: 起始时间到现在的距离</span>
+<span class="sd">        :param lte: 终止时间到现在的距离</span>
+<span class="sd">        :param time_unit: 时间单位，默认为d(day)</span>
+<span class="sd">        参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#date-math</span>
+<span class="sd">        :param time_field: 搜索所使用的标识时间的字段</span>
+<span class="sd">        :return: 删除的数量, 如果出错，则返回-1</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ans_query</span> <span class="o">=</span> <span class="n">query_generator</span><span class="p">(</span><span class="n">gte</span><span class="p">,</span> <span class="n">lte</span><span class="p">,</span> <span class="n">time_unit</span><span class="p">,</span> <span class="n">time_field</span><span class="o">=</span><span class="n">time_field</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">exists_index</span><span class="p">(</span><span class="n">index_name</span><span class="p">):</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">es_host</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">index_name</span><span class="si">}</span><span class="s2">/_delete_by_query&quot;</span>
+            <span class="n">rsp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">ujson</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">ans_query</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">rsp</span> <span class="ow">and</span> <span class="n">rsp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">:</span>
+                <span class="n">dict_res</span> <span class="o">=</span> <span class="n">ujson</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">rsp</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">dict_res</span><span class="p">[</span><span class="s2">&quot;deleted&quot;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span></div>
+
+<div class="viewcode-block" id="ESTools.query_doc"><a class="viewcode-back" href="../index.html#es_tools.ESTools.query_doc">[docs]</a>    <span class="k">def</span> <span class="nf">query_doc</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">index_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">page</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">include</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">exclude</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">gte</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">lte</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">time_unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;d&quot;</span><span class="p">,</span>
+            <span class="n">time_field</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;@timestamp&quot;</span><span class="p">,</span> <span class="n">filters</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        按页查询，from-size法</span>
+
+<span class="sd">        :param index_name: 索引名称</span>
+<span class="sd">        :param page: 页面下标</span>
+<span class="sd">        :param size: 页面大小</span>
+<span class="sd">        :param include: 输出时保留的字段</span>
+<span class="sd">        :param exclude: 输出时忽略的字段</span>
+<span class="sd">        :param gte: 起始时间到现在的距离</span>
+<span class="sd">        :param lte: 终止时间到现在的距离</span>
+<span class="sd">        :param time_unit: 时间单位，默认为d(day)</span>
+<span class="sd">        - 参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#date-math</span>
+<span class="sd">        :param time_field: 时间戳字段名称</span>
+<span class="sd">        :param filters: 过滤条件</span>
+<span class="sd">        :return: 返回包含结果的列表</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">page</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">size</span><span class="p">:</span>
+            <span class="n">page</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_doc_count</span><span class="p">(</span><span class="n">index_name</span><span class="o">=</span><span class="n">index_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">page</span> <span class="o">*</span> <span class="n">size</span> <span class="o">+</span> <span class="n">size</span> <span class="o">&gt;</span> <span class="mi">9999</span><span class="p">:</span>
+            <span class="n">page</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">9999</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">exists_index</span><span class="p">(</span><span class="n">index_name</span><span class="p">):</span>
+            <span class="n">ans_query</span> <span class="o">=</span> <span class="n">query_generator</span><span class="p">(</span>
+                <span class="n">gte</span><span class="p">,</span> <span class="n">lte</span><span class="p">,</span> <span class="n">time_unit</span><span class="p">,</span> <span class="n">page</span><span class="o">=</span><span class="n">page</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">time_field</span><span class="o">=</span><span class="n">time_field</span><span class="p">,</span>
+                <span class="n">include</span><span class="o">=</span><span class="n">include</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="n">exclude</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="n">filters</span>
+            <span class="p">)</span>
+
+            <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">es_host</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">index_name</span><span class="si">}</span><span class="s2">/_search&quot;</span>
+            <span class="n">rsp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">ujson</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">ans_query</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">rsp</span> <span class="ow">and</span> <span class="n">rsp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">ujson</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">rsp</span><span class="o">.</span><span class="n">text</span><span class="p">)[</span><span class="s2">&quot;hits&quot;</span><span class="p">][</span><span class="s2">&quot;hits&quot;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ESTools.query_doc_tp"><a class="viewcode-back" href="../index.html#es_tools.ESTools.query_doc_tp">[docs]</a>    <span class="k">def</span> <span class="nf">query_doc_tp</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">index_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+            <span class="n">include</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">exclude</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">gte</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">lte</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">time_unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;d&quot;</span><span class="p">,</span>
+            <span class="n">time_field</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;@timestamp&quot;</span><span class="p">,</span> <span class="n">filters</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        以线程池的方式获取doc</span>
+
+<span class="sd">        :param index_name: 索引名称</span>
+<span class="sd">        :param size: 每个线程查询的size</span>
+<span class="sd">        :param include: 输出时保留的字段</span>
+<span class="sd">        :param exclude: 输出时忽略的字段</span>
+<span class="sd">        :param gte: 起始时间到现在的距离</span>
+<span class="sd">        :param lte: 终止时间到现在的距离</span>
+<span class="sd">        :param time_unit: 时间单位，默认为d(day)</span>
+<span class="sd">        - 参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#date-math</span>
+<span class="sd">        :param time_field: 时间戳字段名称</span>
+<span class="sd">        :param filters: 过滤条件</span>
+<span class="sd">        :return: 返回包含结果的列表</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="kn">import</span> <span class="n">ThreadPoolExecutor</span><span class="p">,</span> <span class="n">FIRST_COMPLETED</span><span class="p">,</span> <span class="n">wait</span><span class="p">,</span> <span class="n">as_completed</span>
+        <span class="k">with</span> <span class="n">ThreadPoolExecutor</span><span class="p">()</span> <span class="k">as</span> <span class="n">tp</span><span class="p">:</span>
+            <span class="n">total</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_doc_count</span><span class="p">(</span><span class="n">index_name</span><span class="o">=</span><span class="n">index_name</span><span class="p">)</span>
+            <span class="n">pages</span> <span class="o">=</span> <span class="p">(</span><span class="n">total</span> <span class="o">//</span> <span class="n">size</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">total</span> <span class="o">&gt;</span> <span class="mi">9999</span><span class="p">:</span>
+                <span class="n">pages</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">9999</span>
+            <span class="n">tasks</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">tp</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">query_doc</span><span class="p">,</span>
+                    <span class="n">index_name</span><span class="p">,</span> <span class="n">it</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">include</span><span class="p">,</span> <span class="n">exclude</span><span class="p">,</span> <span class="n">gte</span><span class="p">,</span> <span class="n">lte</span><span class="p">,</span> <span class="n">time_unit</span><span class="p">,</span> <span class="n">time_field</span><span class="p">,</span> <span class="n">filters</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">pages</span><span class="p">)</span>
+            <span class="p">]</span>
+            <span class="n">wait</span><span class="p">(</span><span class="n">tasks</span><span class="p">,</span> <span class="n">return_when</span><span class="o">=</span><span class="n">FIRST_COMPLETED</span><span class="p">)</span>
+            <span class="n">ans</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">future</span> <span class="ow">in</span> <span class="n">as_completed</span><span class="p">(</span><span class="n">tasks</span><span class="p">):</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+                    <span class="n">ans</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">ans</span></div>
+
+<div class="viewcode-block" id="ESTools.query_doc_huge"><a class="viewcode-back" href="../index.html#es_tools.ESTools.query_doc_huge">[docs]</a>    <span class="k">def</span> <span class="nf">query_doc_huge</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">index_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">include</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">exclude</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">gte</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">lte</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">time_unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;d&quot;</span><span class="p">,</span>
+            <span class="n">time_field</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;@timestamp&quot;</span><span class="p">,</span> <span class="n">filters</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        基于search-after，查询10000条以上的数据，但无法分页</span>
+
+<span class="sd">        :param index_name:索引名称</span>
+<span class="sd">        :param include: 输出时保留的字段</span>
+<span class="sd">        :param exclude: 输出时忽略的字段</span>
+<span class="sd">        :param gte: 起始时间到现在的距离</span>
+<span class="sd">        :param lte: 终止时间到现在的距离</span>
+<span class="sd">        :param time_unit: 时间单位，默认为d(day)</span>
+<span class="sd">        - 参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#date-math</span>
+<span class="sd">        :param time_field:搜索所使用的标识时间的字段</span>
+<span class="sd">        :param filters: 过滤条件</span>
+<span class="sd">        :return: 返回包含结果的列表</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">size</span> <span class="o">=</span> <span class="mi">10000</span>
+        <span class="n">ans_query</span> <span class="o">=</span> <span class="n">query_generator</span><span class="p">(</span>
+            <span class="n">gte</span><span class="p">,</span> <span class="n">lte</span><span class="p">,</span> <span class="n">time_unit</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">time_field</span><span class="o">=</span><span class="n">time_field</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="n">include</span><span class="p">,</span>
+            <span class="n">exclude</span><span class="o">=</span><span class="n">exclude</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="n">filters</span>
+        <span class="p">)</span>
+        <span class="n">ans_cnt</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">exists_index</span><span class="p">(</span><span class="n">index_name</span><span class="p">):</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">es_host</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">index_name</span><span class="si">}</span><span class="s2">/_search&quot;</span>
+            <span class="n">rsp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">ujson</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">ans_query</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">rsp</span> <span class="ow">and</span> <span class="n">rsp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">:</span>
+                <span class="n">dict_res</span> <span class="o">=</span> <span class="n">ujson</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">rsp</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+                <span class="n">ans_cnt</span> <span class="o">+=</span> <span class="n">size</span>
+                <span class="c1"># total = dict_res[&quot;hits&quot;][&quot;total&quot;][&quot;value&quot;]</span>
+                <span class="n">total</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_doc_count</span><span class="p">(</span><span class="n">index_name</span><span class="o">=</span><span class="n">index_name</span><span class="p">)</span>
+                <span class="n">sub_dict_res</span> <span class="o">=</span> <span class="n">dict_res</span>
+                <span class="k">while</span> <span class="n">ans_cnt</span> <span class="o">&lt;</span> <span class="n">total</span><span class="p">:</span>
+                    <span class="n">sub_search_after</span> <span class="o">=</span> <span class="n">sub_dict_res</span><span class="p">[</span><span class="s2">&quot;hits&quot;</span><span class="p">][</span><span class="s2">&quot;hits&quot;</span><span class="p">][</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="s2">&quot;sort&quot;</span><span class="p">]</span>
+                    <span class="n">sub_ans_query</span> <span class="o">=</span> <span class="n">query_generator</span><span class="p">(</span>
+                        <span class="n">gte</span><span class="p">,</span> <span class="n">lte</span><span class="p">,</span> <span class="n">time_unit</span><span class="p">,</span>
+                        <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span>
+                        <span class="n">search_after</span><span class="o">=</span><span class="n">sub_search_after</span><span class="p">,</span>
+                        <span class="n">time_field</span><span class="o">=</span><span class="n">time_field</span>
+                    <span class="p">)</span>
+                    <span class="n">sub_rsp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">ujson</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">sub_ans_query</span><span class="p">))</span>
+                    <span class="n">sub_dict_res</span> <span class="o">=</span> <span class="n">ujson</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">sub_rsp</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+                    <span class="n">ans_cnt</span> <span class="o">+=</span> <span class="n">size</span>
+                    <span class="n">dict_res</span><span class="p">[</span><span class="s2">&quot;hits&quot;</span><span class="p">][</span><span class="s2">&quot;hits&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">sub_dict_res</span><span class="p">[</span><span class="s2">&quot;hits&quot;</span><span class="p">][</span><span class="s2">&quot;hits&quot;</span><span class="p">])</span>
+                <span class="k">return</span> <span class="n">dict_res</span><span class="p">[</span><span class="s2">&quot;hits&quot;</span><span class="p">][</span><span class="s2">&quot;hits&quot;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">rsp</span> <span class="ow">and</span> <span class="n">rsp</span><span class="o">.</span><span class="n">status_code</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">index_name</span><span class="si">}</span><span class="s2"> does not exists&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+    <span class="k">def</span> <span class="nf">query_doc_custom</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">index_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">query</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">page</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="n">page</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">size</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">query</span><span class="p">[</span><span class="s2">&quot;from&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page</span> <span class="o">*</span> <span class="n">size</span>
+            <span class="n">query</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">size</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">exists_index</span><span class="p">(</span><span class="n">index_name</span><span class="p">):</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">es_host</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">index_name</span><span class="si">}</span><span class="s2">/_search&quot;</span>
+            <span class="n">rsp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">ujson</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">query</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">rsp</span> <span class="ow">and</span> <span class="n">rsp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">:</span>
+                <span class="n">dict_res</span> <span class="o">=</span> <span class="n">rsp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+                <span class="k">return</span> <span class="n">dict_res</span>
+
+<div class="viewcode-block" id="ESTools.get_repositories"><a class="viewcode-back" href="../index.html#es_tools.ESTools.get_repositories">[docs]</a>    <span class="k">def</span> <span class="nf">get_repositories</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        获取仓库列表</span>
+
+<span class="sd">        :return: 返回仓库列表，</span>
+<span class="sd">                 例如： [</span>
+<span class="sd">                 {&quot;id&quot;: &quot;backup_all&quot;, &quot;type&quot;: &quot;fs&quot;},</span>
+<span class="sd">                 ]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">repo_res</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">es_host</span><span class="si">}</span><span class="s2">/_cat/repositories?v&quot;</span>
+        <span class="n">rsp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rsp</span> <span class="ow">and</span> <span class="n">rsp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">rsp</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">col</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">col</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                    <span class="k">continue</span>
+                <span class="n">lds</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="n">tmp</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">col</span><span class="p">)):</span>
+                    <span class="n">tmp</span><span class="p">[</span><span class="n">col</span><span class="p">[</span><span class="n">c</span><span class="p">]]</span> <span class="o">=</span> <span class="n">lds</span><span class="p">[</span><span class="n">c</span><span class="p">]</span>
+                <span class="n">repo_res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">repo_res</span></div>
+
+<div class="viewcode-block" id="ESTools.create_snapshot_repositories"><a class="viewcode-back" href="../index.html#es_tools.ESTools.create_snapshot_repositories">[docs]</a>    <span class="k">def</span> <span class="nf">create_snapshot_repositories</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        创建快照仓库</span>
+
+<span class="sd">        :param repo_name: 仓库名称</span>
+<span class="sd">        :return: bool，创建成功返回True，否则返回False</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># PUT /_snapshot/my_repository</span>
+        <span class="c1"># {</span>
+        <span class="c1">#   &quot;type&quot;: &quot;fs&quot;,</span>
+        <span class="c1">#   &quot;settings&quot;: {</span>
+        <span class="c1">#     &quot;location&quot;: &quot;my_backup_location&quot;</span>
+        <span class="c1">#   }</span>
+        <span class="c1"># }</span>
+
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">es_host</span><span class="si">}</span><span class="s2">/_snapshot/</span><span class="si">{</span><span class="n">repo_name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;fs&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;settings&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;location&quot;</span><span class="p">:</span> <span class="n">repo_name</span><span class="p">,</span>
+                <span class="s2">&quot;compress&quot;</span><span class="p">:</span> <span class="kc">True</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="n">rsp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">ujson</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">rsp</span> <span class="ow">and</span> <span class="n">rsp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="ESTools.get_snapshot_repositories"><a class="viewcode-back" href="../index.html#es_tools.ESTools.get_snapshot_repositories">[docs]</a>    <span class="k">def</span> <span class="nf">get_snapshot_repositories</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        获取快照仓库信息</span>
+
+<span class="sd">        :param repo_name: 仓库名称</span>
+<span class="sd">        :return: dict，仓库信息</span>
+<span class="sd">                 例如：</span>
+<span class="sd">                 {</span>
+<span class="sd">                  &quot;backup_all&quot; : {</span>
+<span class="sd">                    &quot;type&quot; : &quot;fs&quot;,</span>
+<span class="sd">                    &quot;settings&quot; : {</span>
+<span class="sd">                      &quot;readonly&quot; : &quot;true&quot;,</span>
+<span class="sd">                      &quot;compress&quot; : &quot;true&quot;,</span>
+<span class="sd">                      &quot;location&quot; : &quot;backup_all&quot;</span>
+<span class="sd">                    }</span>
+<span class="sd">                  }</span>
+<span class="sd">                }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># GET /_snapshot/my_repository</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">es_host</span><span class="si">}</span><span class="s2">/_snapshot/</span><span class="si">{</span><span class="n">repo_name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">rsp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rsp</span> <span class="ow">and</span> <span class="n">rsp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">rsp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ESTools.delete_snapshot_repositories"><a class="viewcode-back" href="../index.html#es_tools.ESTools.delete_snapshot_repositories">[docs]</a>    <span class="k">def</span> <span class="nf">delete_snapshot_repositories</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        删除快照仓库</span>
+
+<span class="sd">        :param repo_name: 仓库名称</span>
+<span class="sd">        :return: bool，删除成功返回True，否则返回False</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># DELETE /_snapshot/my_repository</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">es_host</span><span class="si">}</span><span class="s2">/_snapshot/</span><span class="si">{</span><span class="n">repo_name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">rsp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rsp</span> <span class="ow">and</span> <span class="n">rsp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="ESTools.cleanup_snapshot_repositories"><a class="viewcode-back" href="../index.html#es_tools.ESTools.cleanup_snapshot_repositories">[docs]</a>    <span class="k">def</span> <span class="nf">cleanup_snapshot_repositories</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        清理快照仓库</span>
+
+<span class="sd">        :param repo_name: 仓库名称</span>
+<span class="sd">        :return: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># POST /_snapshot/my_repository/_cleanup</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">es_host</span><span class="si">}</span><span class="s2">/_snapshot/</span><span class="si">{</span><span class="n">repo_name</span><span class="si">}</span><span class="s2">/_cleanup&quot;</span>
+        <span class="n">rsp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rsp</span> <span class="ow">and</span> <span class="n">rsp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">rsp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ESTools.create_snapshot"><a class="viewcode-back" href="../index.html#es_tools.ESTools.create_snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">create_snapshot</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">repo_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">snapshot_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">indices</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">wait_for_completion</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># noqat: E501</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        创建快照</span>
+
+<span class="sd">        :param repo_name: 仓库名称</span>
+<span class="sd">        :param snapshot_name: 快照名称</span>
+<span class="sd">        :param indices: 索引列表</span>
+<span class="sd">        :param wait_for_completion: 是否等待创建完成</span>
+<span class="sd">        :return: dict，例如：</span>
+<span class="sd">                        {</span>
+<span class="sd">                          &quot;snapshot&quot;: {</span>
+<span class="sd">                            &quot;snapshot&quot;: &quot;snapshot_2&quot;,</span>
+<span class="sd">                            &quot;uuid&quot;: &quot;vdRctLCxSketdKb54xw67g&quot;,</span>
+<span class="sd">                            &quot;version_id&quot;: &lt;version_id&gt;,</span>
+<span class="sd">                            &quot;version&quot;: &lt;version&gt;,</span>
+<span class="sd">                            &quot;indices&quot;: [],</span>
+<span class="sd">                            &quot;data_streams&quot;: [],</span>
+<span class="sd">                            &quot;feature_states&quot;: [],</span>
+<span class="sd">                            &quot;include_global_state&quot;: false,</span>
+<span class="sd">                            &quot;metadata&quot;: {</span>
+<span class="sd">                              &quot;taken_by&quot;: &quot;user123&quot;,</span>
+<span class="sd">                              &quot;taken_because&quot;: &quot;backup before upgrading&quot;</span>
+<span class="sd">                            },</span>
+<span class="sd">                            &quot;state&quot;: &quot;SUCCESS&quot;,</span>
+<span class="sd">                            &quot;start_time&quot;: &quot;2020-06-25T14:00:28.850Z&quot;,</span>
+<span class="sd">                            &quot;start_time_in_millis&quot;: 1593093628850,</span>
+<span class="sd">                            &quot;end_time&quot;: &quot;2020-06-25T14:00:28.850Z&quot;,</span>
+<span class="sd">                            &quot;end_time_in_millis&quot;: 1593094752018,</span>
+<span class="sd">                            &quot;duration_in_millis&quot;: 0,</span>
+<span class="sd">                            &quot;failures&quot;: [],</span>
+<span class="sd">                            &quot;shards&quot;: {</span>
+<span class="sd">                              &quot;total&quot;: 0,</span>
+<span class="sd">                              &quot;failed&quot;: 0,</span>
+<span class="sd">                              &quot;successful&quot;: 0</span>
+<span class="sd">                            }</span>
+<span class="sd">                          }</span>
+<span class="sd">                        }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># PUT /_snapshot/my_repository/snapshot_2?wait_for_completion=true</span>
+        <span class="c1"># {</span>
+        <span class="c1">#   &quot;indices&quot;: &quot;index_1,index_2&quot;,</span>
+        <span class="c1">#   &quot;ignore_unavailable&quot;: true,</span>
+        <span class="c1">#   &quot;include_global_state&quot;: false,</span>
+        <span class="c1">#   &quot;metadata&quot;: {</span>
+        <span class="c1">#     &quot;taken_by&quot;: &quot;user123&quot;,</span>
+        <span class="c1">#     &quot;taken_because&quot;: &quot;backup before upgrading&quot;</span>
+        <span class="c1">#   }</span>
+        <span class="c1"># }</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">es_host</span><span class="si">}</span><span class="s2">/_snapshot/</span><span class="si">{</span><span class="n">repo_name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">snapshot_name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">wait_for_completion</span><span class="o">=</span><span class="n">wait_for_completion</span>
+        <span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;indices&quot;</span><span class="p">:</span> <span class="n">indices</span> <span class="ow">or</span> <span class="p">[</span><span class="s2">&quot;*&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;ignore_unavailable&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="s2">&quot;include_global_state&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;taken_by&quot;</span><span class="p">:</span> <span class="s2">&quot;cfp&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;taken_because&quot;</span><span class="p">:</span> <span class="s2">&quot;backup before upgrading&quot;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="n">rsp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">ujson</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">rsp</span> <span class="ow">and</span> <span class="n">rsp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">rsp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ESTools.get_snapshot"><a class="viewcode-back" href="../index.html#es_tools.ESTools.get_snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">get_snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">snapshot_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># noqat: E501</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        获取快照</span>
+
+<span class="sd">        :param repo_name: 仓库名称</span>
+<span class="sd">        :param snapshot_name: 快照名称</span>
+<span class="sd">        :return: dict，例如：</span>
+<span class="sd">                    {</span>
+<span class="sd">                      &quot;snapshots&quot;: [</span>
+<span class="sd">                        {</span>
+<span class="sd">                          &quot;snapshot&quot;: &quot;snapshot_2&quot;,</span>
+<span class="sd">                          &quot;uuid&quot;: &quot;vdRctLCxSketdKb54xw67g&quot;,</span>
+<span class="sd">                          &quot;version_id&quot;: &lt;version_id&gt;,</span>
+<span class="sd">                          &quot;version&quot;: &lt;version&gt;,</span>
+<span class="sd">                          &quot;indices&quot;: [],</span>
+<span class="sd">                          &quot;data_streams&quot;: [],</span>
+<span class="sd">                          &quot;feature_states&quot;: [],</span>
+<span class="sd">                          &quot;include_global_state&quot;: true,</span>
+<span class="sd">                          &quot;state&quot;: &quot;SUCCESS&quot;,</span>
+<span class="sd">                          &quot;start_time&quot;: &quot;2020-07-06T21:55:18.129Z&quot;,</span>
+<span class="sd">                          &quot;start_time_in_millis&quot;: 1593093628850,</span>
+<span class="sd">                          &quot;end_time&quot;: &quot;2020-07-06T21:55:18.876Z&quot;,</span>
+<span class="sd">                          &quot;end_time_in_millis&quot;: 1593094752018,</span>
+<span class="sd">                          &quot;duration_in_millis&quot;: 0,</span>
+<span class="sd">                          &quot;failures&quot;: [],</span>
+<span class="sd">                          &quot;shards&quot;: {</span>
+<span class="sd">                            &quot;total&quot;: 0,</span>
+<span class="sd">                            &quot;failed&quot;: 0,</span>
+<span class="sd">                            &quot;successful&quot;: 0</span>
+<span class="sd">                          }</span>
+<span class="sd">                        }</span>
+<span class="sd">                      ]</span>
+<span class="sd">                    }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># GET /_snapshot/my_repository/my_snapshot</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">es_host</span><span class="si">}</span><span class="s2">/_snapshot/</span><span class="si">{</span><span class="n">repo_name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">snapshot_name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">rsp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rsp</span> <span class="ow">and</span> <span class="n">rsp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">rsp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ESTools.get_snapshot_status"><a class="viewcode-back" href="../index.html#es_tools.ESTools.get_snapshot_status">[docs]</a>    <span class="k">def</span> <span class="nf">get_snapshot_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">snapshot_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># noqat: E501</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        获取快照状态</span>
+
+<span class="sd">        :param repo_name: 仓库名称</span>
+<span class="sd">        :param snapshot_name: 快照名称</span>
+<span class="sd">        :return: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># GET /_snapshot/my_repository/my_snapshot/_status</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">es_host</span><span class="si">}</span><span class="s2">/_snapshot/</span><span class="si">{</span><span class="n">repo_name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">snapshot_name</span><span class="si">}</span><span class="s2">/_status&quot;</span>
+        <span class="n">rsp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rsp</span> <span class="ow">and</span> <span class="n">rsp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">rsp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ESTools.restore_snapshot"><a class="viewcode-back" href="../index.html#es_tools.ESTools.restore_snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">restore_snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">snapshot_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">indices</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># noqat: E501</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        恢复快照</span>
+
+<span class="sd">        :param repo_name: 仓库名称</span>
+<span class="sd">        :param snapshot_name: 快照名称</span>
+<span class="sd">        :return: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># POST /_snapshot/backup/snapshot-2021-07-30-15-59/_restore?pretty&amp;wait_for_completion=true</span>
+        <span class="c1"># {</span>
+        <span class="c1">#   &quot;indices&quot;: &quot;*&quot;,</span>
+        <span class="c1">#   &quot;ignore_unavailable&quot;: true,</span>
+        <span class="c1">#   &quot;include_global_state&quot;: false,</span>
+        <span class="c1">#   &quot;include_aliases&quot;: false,</span>
+        <span class="c1">#   &quot;index_settings&quot;: {</span>
+        <span class="c1">#     &quot;index.number_of_replicas&quot;: 1</span>
+        <span class="c1">#   }</span>
+        <span class="c1"># }</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">es_host</span><span class="si">}</span><span class="s2">/_snapshot/</span><span class="si">{</span><span class="n">repo_name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">snapshot_name</span><span class="si">}</span><span class="s2">/_restore?pretty&amp;wait_for_completion=true&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;indices&quot;</span><span class="p">:</span> <span class="n">indices</span><span class="p">,</span>
+            <span class="s2">&quot;ignore_unavailable&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="s2">&quot;include_global_state&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">&quot;include_aliases&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">&quot;index_settings&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;index.number_of_replicas&quot;</span><span class="p">:</span> <span class="mi">1</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="n">rsp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">ujson</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">rsp</span> <span class="ow">and</span> <span class="n">rsp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">rsp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ESTools.restore_all_snapshot"><a class="viewcode-back" href="../index.html#es_tools.ESTools.restore_all_snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">restore_all_snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">snapshot_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">shards</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        恢复所有快照</span>
+
+<span class="sd">        :param repo_name: 快照仓库</span>
+<span class="sd">        :param snapshot_name:</span>
+<span class="sd">        :param shards:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">shards</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">sinfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_snapshot</span><span class="p">(</span><span class="n">repo_name</span><span class="p">,</span> <span class="n">snapshot_name</span><span class="p">)</span>
+            <span class="n">indices</span> <span class="o">=</span> <span class="n">sinfo</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;snapshots&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;indices&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">indices</span> <span class="o">=</span> <span class="n">shards</span>
+
+        <span class="n">filter_indices</span> <span class="o">=</span> <span class="n">indices</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;^\.&quot;</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+                <span class="n">filter_indices</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="n">filter_indices</span>
+        <span class="n">failure_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">success_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">threshold</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="k">while</span> <span class="kc">True</span> <span class="ow">and</span> <span class="n">indices</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">:</span>
+                    <span class="n">t1_1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">restore_snapshot</span><span class="p">(</span><span class="n">repo_name</span><span class="p">,</span> <span class="n">snapshot_name</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span>
+                    <span class="n">t1_2</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;record.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;indices: </span><span class="si">%-80s</span><span class="s2"> use time: </span><span class="si">%.6f</span><span class="s2">s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">t1_2</span> <span class="o">-</span> <span class="n">t1_1</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;snapshot&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;shards&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;failed&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="nb">print</span><span class="p">(</span>
+                                <span class="sa">f</span><span class="s2">&quot;failure restore </span><span class="si">{</span><span class="n">repo_name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">snapshot_name</span><span class="si">}</span><span class="s2">, &quot;</span>
+                                <span class="sa">f</span><span class="s2">&quot;indices: </span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2">, use time: </span><span class="si">{</span><span class="n">t1_2</span> <span class="o">-</span> <span class="n">t1_1</span><span class="si">}</span><span class="s2">s&quot;</span>
+                            <span class="p">)</span>
+                            <span class="n">failure_list</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;index&quot;</span><span class="p">:</span> <span class="n">index</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">t1_2</span> <span class="o">-</span> <span class="n">t1_1</span><span class="p">})</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">success_list</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;index&quot;</span><span class="p">:</span> <span class="n">index</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">t1_2</span> <span class="o">-</span> <span class="n">t1_1</span><span class="p">})</span>
+                            <span class="nb">print</span><span class="p">(</span>
+                                <span class="sa">f</span><span class="s2">&quot;success restore </span><span class="si">{</span><span class="n">repo_name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">snapshot_name</span><span class="si">}</span><span class="s2">, &quot;</span>
+                                <span class="sa">f</span><span class="s2">&quot;indices: </span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2">, use time: </span><span class="si">{</span><span class="n">t1_2</span> <span class="o">-</span> <span class="n">t1_1</span><span class="si">}</span><span class="s2">s&quot;</span>
+                            <span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;failure restore </span><span class="si">{</span><span class="n">repo_name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">snapshot_name</span><span class="si">}</span><span class="s2">, indices: </span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2">, use time: </span><span class="si">{</span><span class="n">t1_2</span> <span class="o">-</span> <span class="n">t1_1</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+                        <span class="n">failure_list</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;index&quot;</span><span class="p">:</span> <span class="n">index</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">t1_2</span> <span class="o">-</span> <span class="n">t1_1</span><span class="p">})</span>
+                    <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                    <span class="n">t2</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">count</span> <span class="o">&gt;=</span> <span class="n">threshold</span><span class="p">:</span>
+                        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;restore_success.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">repo_name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">snapshot_name</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;date: </span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;use time: </span><span class="si">{</span><span class="n">t2</span> <span class="o">-</span> <span class="n">t1</span><span class="si">}</span><span class="s2">s</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">success_list</span><span class="p">:</span>
+                                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+                        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;restore_failure.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">repo_name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">snapshot_name</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;date: </span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;use time: </span><span class="si">{</span><span class="n">t2</span> <span class="o">-</span> <span class="n">t1</span><span class="si">}</span><span class="s2">s</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">failure_list</span><span class="p">:</span>
+                                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="n">threshold</span> <span class="o">+=</span> <span class="mi">10</span>
+                        <span class="n">success_list</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+                        <span class="n">failure_list</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">count</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">indices</span><span class="p">):</span>
+                        <span class="k">break</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">get_snapshot_shards</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">snapshot_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="c1"># GET /_snapshot/backup/snapshot-2021-07-30-15-59</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">es_host</span><span class="si">}</span><span class="s2">/_snapshot/</span><span class="si">{</span><span class="n">repo_name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">snapshot_name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">rsp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rsp</span> <span class="ow">and</span> <span class="n">rsp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">rsp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;snapshots&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;indices&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_shards_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># GET /_cat/shards?h=index,shard,prirep,state,unassigned.reason&amp;s=state</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">es_host</span><span class="si">}</span><span class="s2">/_cat/shards?h=index,prirep,state&amp;s=state&quot;</span>
+        <span class="n">rsp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rsp</span> <span class="ow">and</span> <span class="n">rsp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">rsp</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">get_shards_pos</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># GET /_cat/shards?h=index,state,ip,node&amp;s=state</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">es_host</span><span class="si">}</span><span class="s2">/_cat/shards?h=index,shard,state,ip,node&amp;s=index&quot;</span>
+        <span class="n">rsp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rsp</span> <span class="ow">and</span> <span class="n">rsp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">rsp</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">get_unassigned_shards</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">shards</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_shards_info</span><span class="p">()</span>
+        <span class="n">unassigned_res</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">started_res</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">shards</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">sarr</span> <span class="ow">in</span> <span class="n">shards</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">sarr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;p&#39;</span> <span class="ow">and</span> <span class="n">sarr</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;UNASSIGNED&#39;</span><span class="p">:</span>
+                    <span class="n">unassigned_res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sarr</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">sarr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;p&#39;</span> <span class="ow">and</span> <span class="n">sarr</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;STARTED&#39;</span><span class="p">:</span>
+                    <span class="n">started_res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sarr</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">started_res</span><span class="p">,</span> <span class="n">unassigned_res</span>
+
+    <span class="k">def</span> <span class="nf">delete_unassigned_index_and_restore</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">snapshot_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">started_res</span><span class="p">,</span> <span class="n">unassigned_shards</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_unassigned_shards</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delete_all_index</span><span class="p">(</span><span class="n">unassigned_shards</span><span class="p">)</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_snapshot_shards</span><span class="p">(</span><span class="n">repo_name</span><span class="p">,</span> <span class="n">snapshot_name</span><span class="p">)</span>
+        <span class="n">unassigned_shards</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">started_res</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">restore_all_snapshot</span><span class="p">(</span><span class="n">repo_name</span><span class="p">,</span> <span class="n">snapshot_name</span><span class="p">,</span> <span class="n">unassigned_shards</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">vail_shards_rack</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">shards_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_shards_pos</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">shards_pos</span><span class="p">:</span>
+            <span class="n">shards_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">shards_pos</span><span class="p">:</span>
+                <span class="n">s_index</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">s_shard</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="c1"># s_state = s[2]</span>
+                <span class="n">s_ip</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+                <span class="c1"># s_node = s[4]</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">s_index</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">s_shard</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">shards_dict</span><span class="p">:</span>
+                    <span class="n">shards_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s_ip</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">shards_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">s_ip</span><span class="p">]</span>
+            <span class="n">failure_res</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">success_count</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">failure_count</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">ips</span> <span class="ow">in</span> <span class="n">shards_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ips</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">ips</span><span class="p">)):</span>
+                    <span class="n">failure_res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+                    <span class="n">failure_count</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">success_count</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">success_count</span><span class="o">=</span><span class="n">success_count</span><span class="p">,</span> <span class="n">failure_count</span><span class="o">=</span><span class="n">failure_count</span><span class="p">,</span> <span class="n">failure_res</span><span class="o">=</span><span class="n">failure_res</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">vail_index_count</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># GET /_cat/indices?v&amp;h=index,docs.count</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">es_host</span><span class="si">}</span><span class="s2">/_cat/indices?h=index,docs.count&amp;s=index&quot;</span>
+        <span class="n">rsp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">new_data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">rsp</span> <span class="ow">and</span> <span class="n">rsp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">rsp</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">count</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">new_data</span><span class="p">:</span>
+                    <span class="n">new_data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">+=</span> <span class="n">count</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">new_data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">count</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span>
+
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">es_host</span><span class="si">}</span><span class="s2">/_cat/indices?h=index,docs.count&amp;s=index&quot;</span>
+        <span class="n">rsp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">old_data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">rsp</span> <span class="ow">and</span> <span class="n">rsp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">rsp</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">count</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">old_data</span><span class="p">:</span>
+                    <span class="n">old_data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">+=</span> <span class="n">count</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">old_data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">count</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span>
+
+        <span class="n">success_res</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">failure_res</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">other_res</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">new_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="c1"># if re.match(&quot;^\.&quot;, key) and key not in self.special_index:</span>
+            <span class="c1">#     continue</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">old_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+                <span class="n">other_res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">old_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="n">val</span><span class="p">:</span>
+                <span class="n">success_res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">old_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">!=</span> <span class="n">val</span><span class="p">:</span>
+                <span class="n">failure_res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">success_count</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">success_res</span><span class="p">),</span>
+            <span class="n">success_res</span><span class="o">=</span><span class="n">success_res</span><span class="p">,</span>
+            <span class="n">failure_count</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">failure_res</span><span class="p">),</span>
+            <span class="n">failure_res</span><span class="o">=</span><span class="n">failure_res</span><span class="p">,</span>
+            <span class="n">other_count</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">other_res</span><span class="p">),</span>
+            <span class="n">other_res</span><span class="o">=</span><span class="n">other_res</span>
+        <span class="p">)</span></div>
+</pre></div>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By r0<br/>
+        
+            &copy; Copyright 2021, r0.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

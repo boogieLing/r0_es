@@ -1,0 +1,32 @@
+Metadata-Version: 2.1
+Name: r0-es
+Version: 0.0.2
+Summary:  A tool to connect elasticSearch， help users to add, delete, modify, and check documents and indexe. Date-related operations are easier to use and manage snapshot repositories.
+Home-page: https://github.com/boogieLing/r0_es
+Author: r0
+Author-email: boogieLing_o@163.com
+License: UNKNOWN
+Project-URL: Bug Tracker, https://github.com/boogieLing/r0_es/issues
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3.5
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# R0 es tools
+
+A tool to connect elasticSearch，
+and help users to add, delete, modify, and check documents and indexe.
+
+Date-related operations are easier to use and manage snapshot repositories.
+
+In addition, this project also configured a small plug-in to monitor files and automatically monitor documents.
+
+## Get it
+```shell
+pip3 install https://github.com/boogieLing/r0_es
+```
+
+

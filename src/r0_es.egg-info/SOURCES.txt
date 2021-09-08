@@ -1,0 +1,14 @@
+LICENSE
+README.rst
+pyproject.toml
+setup.cfg
+src/r0_es/__init__.py
+src/r0_es/cfg_settings.py
+src/r0_es/es_tools.py
+src/r0_es/http_base.py
+src/r0_es.egg-info/PKG-INFO
+src/r0_es.egg-info/SOURCES.txt
+src/r0_es.egg-info/dependency_links.txt
+src/r0_es.egg-info/top_level.txt
+test/test_api.py
+test/test_es.py
