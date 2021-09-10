@@ -1,10 +1,11 @@
+import os
 import time
 import pytest
 
 from timeit import default_timer as timer
 from functools import wraps
 
-from src.r0_es.es_tools import ESClient
+from src.r0_es.es_tools import ESTools
 
 
 def fun_run_time(func):
@@ -19,7 +20,7 @@ def fun_run_time(func):
     return inner
 
 
-es_client = ESClient(prod_cfg)
+es_client = ESTools(os.path.abspath(os.path.join(os.path.dirname(__file__), "prod.cfg")))
 
 
 @pytest.mark.skipif(not es_client, reason="Not connected to es")
@@ -53,7 +54,7 @@ class TestEs(object):
     @fun_run_time
     def test_delete_index_by_date(self):
         res_index = es_client.create_index("test-qwq")
-        res_cnt = es_client.delete_index_by_date(res_index, "09-07")
+        res_cnt = es_client.delete_index_by_date(res_index, "09-10")
         assert (res_cnt == 1 and not es_client.exists_index(res_index))
 
     @fun_run_time
@@ -68,7 +69,7 @@ class TestEs(object):
         res_status = es_client.upsert_doc(index_name=res_index, doc_body={
             "name": "qwq"
         })
-        res_cnt = es_client.delete_index_by_date(res_index, "09-07")
+        res_cnt = es_client.delete_index_by_date(res_index, "09-10")
         assert (res_status == 201 and res_cnt == 1 and not es_client.exists_index(res_index))
 
     @fun_run_time
@@ -79,7 +80,7 @@ class TestEs(object):
         })
         time.sleep(2)
         res_del = es_client.delete_doc_by_time_frame(res_index)
-        res_cnt = es_client.delete_index_by_date(res_index, "09-07")
+        res_cnt = es_client.delete_index_by_date(res_index, "09-10")
         assert (res_cnt == 1 and not es_client.exists_index(res_index))
         assert (res_del == 1)
 
@@ -93,7 +94,7 @@ class TestEs(object):
             })
         time.sleep(2)
         res_doc = es_client.query_doc(res_index)
-        res_cnt = es_client.delete_index_by_date(res_index, "09-07")
+        res_cnt = es_client.delete_index_by_date(res_index, "09-10")
         assert (res_cnt == 1 and not es_client.exists_index(res_index))
         assert (len(res_doc) == 101)
 
@@ -107,7 +108,7 @@ class TestEs(object):
             })
         time.sleep(2)
         res_doc = es_client.query_doc_tp(res_index)
-        res_cnt = es_client.delete_index_by_date(res_index, "09-07")
+        res_cnt = es_client.delete_index_by_date(res_index, "09-10")
         assert (res_cnt == 1 and not es_client.exists_index(res_index))
         assert (len(res_doc) == 101)
 

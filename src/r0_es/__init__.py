@@ -1,5 +1,5 @@
-from es_tools import *
-from cfg_settings import set_es_config, get_es_config
+from .es_tools import ESTools
+from .cfg_settings import set_es_config, get_es_config
 
 
 def hello_world():

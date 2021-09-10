@@ -40,44 +40,44 @@ def main():
     # res = es_client.delete_index_by_date("test-qwq", date_str="09-02")
     # print(res)
     for it in range(5):
-        es_client.upsert_doc("test-qwq-2021.09.08", doc_body={
+        es_client.upsert_doc("test-qwq-2021.09.10", doc_body={
             "name": "qwq",
             "index": it
         })
-    res = es_client.upsert_doc("test-qwq-2021.09.08", doc_body={
+    res = es_client.upsert_doc("test-qwq-2021.09.10", doc_body={
         "name": "qwq",
         "index": 1
     })
     print(res)
     time.sleep(2)
-    res = es_client.get_doc_count("test-qwq-2021.09.08")
+    res = es_client.get_doc_count("test-qwq-2021.09.10")
     print(res)
     time.sleep(2)
-    res = es_client.query_doc("test-qwq-2021.09.08", page=0, size=100)
+    res = es_client.query_doc("test-qwq-2021.09.10", page=0, size=100)
     print(len(res))
     print(res)
 
     tic = timer()
-    res = es_client.query_doc("test-qwq-2021.09.08")
+    res = es_client.query_doc("test-qwq-2021.09.10")
     print(len(res))
     toc = timer()
     print(toc - tic)
 
     tic = timer()
-    res = es_client.query_doc_tp("test-qwq-2021.09.08")
+    res = es_client.query_doc_tp("test-qwq-2021.09.10")
     print(len(res))
     toc = timer()
     print(toc - tic)
 
     tic = timer()
-    res = es_client.query_doc_huge("test-qwq-2021.09.08")
+    res = es_client.query_doc_huge("test-qwq-2021.09.10")
     print(len(res))
     toc = timer()
     print(toc - tic)
 
-    res = es_client.delete_index("test-qwq-2021.09.08")
+    res = es_client.delete_index("test-qwq-2021.09.10")
     print(res)
-    res = es_client.delete_index("test-qwq-2021.09.08-2021.09.08")
+    res = es_client.delete_index("test-qwq-2021.09.10-2021.09.10")
     print(res)
 
     # tic = timer()

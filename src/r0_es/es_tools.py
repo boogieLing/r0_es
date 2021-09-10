@@ -17,8 +17,8 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 from oslo_log import log
 
-from http_base import HTTPClient
-from cfg_settings import ESConfig
+from .http_base import HTTPClient
+from .cfg_settings import ESConfig
 
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
@@ -291,10 +291,11 @@ class ESTools(HTTPClient, ABC):
         return []
 
     def create_index(self, index_prefix: str, index_mapping: Dict = None,
-                     number_of_shards: int = 1, number_of_replicas: int = 1):
+                     number_of_shards: int = 1, number_of_replicas: int = 1, auto_timestamp: bool = True):
         """
         创建一个新索引，并添加创建时间后缀，yyyy.MM.dd
 
+        :param auto_timestamp: 是否补充时间戳到index尾部
         :param index_prefix: 索引
         :param index_mapping: 创建索引API允许提供的类型映射，可以为空
         :param number_of_shards: 碎片的数量
@@ -322,7 +323,9 @@ class ESTools(HTTPClient, ABC):
             "mappings": index_mapping
         }
         timestamp = str(datetime.datetime.utcnow().strftime("%Y.%m.%d"))
-        index_name = "-".join([index_prefix, timestamp])
+        index_name = index_prefix
+        if auto_timestamp:
+            index_name = "-".join([index_prefix, timestamp])
 
         if not self.exists_index(index_name):
             url = f"{self.es_host}/{index_name}"
