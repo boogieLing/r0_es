@@ -18,7 +18,7 @@ In addition, this project also configured a small plug-in to monitor files and a
 
 ## Get it
 ```shell
-pip3 install https://github.com/boogieLing/r0_es
+pip3 install git+git://github.com/boogieLing/r0_es
 ```
 ## USEAGE
 ### initialize

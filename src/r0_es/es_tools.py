@@ -464,6 +464,7 @@ class ESTools(HTTPClient, ABC):
         """
         根据提供的时间范围删除记录
 
+
         :param index_name: 索引名称
         :param gte: 起始时间到现在的距离
         :param lte: 终止时间到现在的距离

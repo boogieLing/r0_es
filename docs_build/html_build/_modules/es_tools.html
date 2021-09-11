@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>es_tools &#8212; r0_es  documentation</title>
+    <title>es_tools &#8212; r0-es 0.0.4 documentation</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
   <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -53,7 +53,7 @@
     <a class="navbar-brand text-wrap" href="../index.html">
       
       
-      <h1 class="site-logo" id="site-title">r0_es  documentation</h1>
+      <h1 class="site-logo" id="site-title">r0-es 0.0.4 documentation</h1>
       
     </a>
 </div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
@@ -411,10 +411,11 @@
         <span class="k">return</span> <span class="p">[]</span></div>
 
 <div class="viewcode-block" id="ESTools.create_index"><a class="viewcode-back" href="../index.html#es_tools.ESTools.create_index">[docs]</a>    <span class="k">def</span> <span class="nf">create_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index_prefix</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">index_mapping</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                     <span class="n">number_of_shards</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">number_of_replicas</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+                     <span class="n">number_of_shards</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">number_of_replicas</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">auto_timestamp</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        创建一个新索引，并添加创建时间后缀，yyyy.MM.dd</span>
 
+<span class="sd">        :param auto_timestamp: 是否补充时间戳到index尾部</span>
 <span class="sd">        :param index_prefix: 索引</span>
 <span class="sd">        :param index_mapping: 创建索引API允许提供的类型映射，可以为空</span>
 <span class="sd">        :param number_of_shards: 碎片的数量</span>
@@ -442,7 +443,9 @@
             <span class="s2">&quot;mappings&quot;</span><span class="p">:</span> <span class="n">index_mapping</span>
         <span class="p">}</span>
         <span class="n">timestamp</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y.%m.</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">))</span>
-        <span class="n">index_name</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">index_prefix</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">])</span>
+        <span class="n">index_name</span> <span class="o">=</span> <span class="n">index_prefix</span>
+        <span class="k">if</span> <span class="n">auto_timestamp</span><span class="p">:</span>
+            <span class="n">index_name</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">index_prefix</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">])</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">exists_index</span><span class="p">(</span><span class="n">index_name</span><span class="p">):</span>
             <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">es_host</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">index_name</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -580,6 +583,7 @@
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        根据提供的时间范围删除记录</span>
+
 
 <span class="sd">        :param index_name: 索引名称</span>
 <span class="sd">        :param gte: 起始时间到现在的距离</span>

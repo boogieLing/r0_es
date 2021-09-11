@@ -19,10 +19,6 @@ def fun_run_time(func):
 
 def main():
     # print(prod_cfg.elasticsearch.username)
-    # es_client = ESClient(
-    #     host="https://prod-elasticsearch.deeproute.cn",
-    #     username="elastic", password="!QAZ@WSX", is_require_auth=True
-    # )
     import os
     es_client = ESTools(
         os.path.abspath(os.path.join(os.path.dirname(__file__), "prod.cfg"))

@@ -1,9 +1,9 @@
-.. r0_es documentation master file, created by
-   sphinx-quickstart on Wed Sep  8 15:08:37 2021.
+.. r0-es documentation master file, created by
+   sphinx-quickstart on Fri Sep 10 19:08:17 2021.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to r0_es's documentation!
+Welcome to r0-es's documentation!
 =================================
 
 .. toctree::

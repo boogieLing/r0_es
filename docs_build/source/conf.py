@@ -17,9 +17,12 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'r0_es'
+project = 'r0-es'
 copyright = '2021, r0'
 author = 'r0'
+
+# The full version, including alpha/beta/rc tags
+release = '0.0.4'
 
 
 # -- General configuration ---------------------------------------------------
