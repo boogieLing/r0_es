@@ -91,6 +91,8 @@ query all at the same time according to the time range query, query all at the s
 ## Automatic document
 在本项目还有一个可执行文件"docs_watcher"，您可以参考我的另一个项目来使用他。
 
+https://github.com/boogieLing/r0_doc_watcher
+
 本项目的接口文档就是由这个小插件生成的，所有功能的详细的使用方法可以在html文档中看到。
 
 There is also an executable file "Docs Watcher" in this project, which you can use by referring to another of my projects.
